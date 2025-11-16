@@ -60,17 +60,31 @@ process.on('unhandledRejection', (reason) => {
 
 function createWindow() {
     mainWindow = new BrowserWindow({
-        width: 800,
-        height: 600,
+        width: 1200,
+        height: 800,
+        minWidth: 1000,
+        minHeight: 700,
+        center: true,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
             contextIsolation: true,
             nodeIntegration: false,
-            enableRemoteModule: false
+            enableRemoteModule: false,
+            zoomFactor: 1.0
         }
     });
 
     mainWindow.loadFile(path.join(__dirname, 'index.html'));
+
+    // Ensure zoom level is set to 100% (1.0) after window is ready
+    mainWindow.webContents.once('did-finish-load', () => {
+        mainWindow.webContents.setZoomFactor(1.0);
+    });
+
+    // Also set zoom when window is shown (in case it was restored)
+    mainWindow.once('show', () => {
+        mainWindow.webContents.setZoomFactor(1.0);
+    });
 }
 
 app.whenReady().then(() => {
@@ -261,27 +275,48 @@ async function decryptFile(encPath, password, options = {}) {
             const tmpPath = outPath + '.tmp-' + crypto.randomBytes(6).toString('hex');
 
             const start = headerLen;
-            const end = fileSize - AUTH_TAG_LEN - 1; // inclusive
+            const end = fileSize - AUTH_TAG_LEN - 1; // inclusive end position (Node.js end is inclusive)
+
+            // Handle empty files (0 bytes of encrypted data) - end will be start - 1
+            // This is valid - it means the original file was empty
+            const hasEncryptedData = end >= start;
+            const totalBytes = hasEncryptedData ? (end - start + 1) : 0; // +1 because end is inclusive
 
             // Stream decrypted output to a temp file, then fsync & rename atomically
-            const readOpts = Object.assign({ start, end }, options.signal ? { signal: options.signal } : {});
-            const readStream = fs.createReadStream(encPath, readOpts);
+            let readStream;
+            let counter;
 
-            // counting transform for per-file byte progress during decrypt
-            const totalBytes = end - start + 1;
-            const counter = new CountingTransform(totalBytes, (seen) => {
-                sendProgress({ type: 'file-progress', file: encPath, seen, total: totalBytes });
-            });
+            if (hasEncryptedData) {
+                // Normal case: file has encrypted data
+                const readOpts = Object.assign({ start, end }, options.signal ? { signal: options.signal } : {});
+                readStream = fs.createReadStream(encPath, readOpts);
+                counter = new CountingTransform(totalBytes, (seen) => {
+                    sendProgress({ type: 'file-progress', file: encPath, seen, total: totalBytes });
+                });
+            } else {
+                // Empty file case: create an empty stream (no data to decrypt)
+                // Use stream.Readable which is already available via the stream module
+                const { Readable } = stream;
+                readStream = new Readable({
+                    read() {
+                        this.push(null); // End of stream immediately
+                    }
+                });
+                counter = new CountingTransform(0, (seen) => {
+                    sendProgress({ type: 'file-progress', file: encPath, seen, total: 0 });
+                });
+            }
 
             // wire abort to destroy streams quickly
             const abortHandler = () => {
-                try { readStream.destroy(new Error('aborted')); } catch (e) { }
+                try { if (readStream) readStream.destroy(new Error('aborted')); } catch (e) { }
                 try { decipher.destroy(new Error('aborted')); } catch (e) { }
             };
             if (options.signal) options.signal.addEventListener('abort', abortHandler, { once: true });
 
             try {
-                await pipeline(readStream, counter, decipher, fs.createWriteStream(tmpPath));
+                const writeStream = fs.createWriteStream(tmpPath);
+                await pipeline(readStream, counter, decipher, writeStream);
 
                 // Ensure data is flushed to disk (best-effort)
                 try {

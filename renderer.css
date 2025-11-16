@@ -18,6 +18,7 @@ html,
 body {
     height: 100%;
     margin: 0;
+    padding: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(#f7fafc, #eef2ff);
     color: var(--text);
@@ -27,12 +28,14 @@ body {
 /* prevent horizontal overflow on very long filenames/contents */
 body {
     overflow-x: hidden;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 .window {
     width: 100%;
     max-width: var(--container-max-width);
-    margin: 24px auto;
+    margin: 0 auto;
     background: var(--panel);
     border: 1px solid var(--border);
     box-shadow: 0 8px 30px rgba(2, 6, 23, 0.06);
@@ -40,9 +43,10 @@ body {
     grid-template-columns: 360px 1fr;
     grid-template-rows: 64px 1fr auto;
     gap: var(--gap);
-    padding: 18px;
+    padding: 24px;
     border-radius: var(--radius);
     transition: max-width 260ms ease, box-shadow 200ms ease;
+    box-sizing: border-box;
 }
 
 .titlebar {
@@ -50,57 +54,116 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 16px;
+    padding: 16px 20px;
+    margin: 0 0 8px 0;
     background: transparent;
     border-bottom: 1px solid var(--border);
 }
 
 .titlebar .title {
     font-weight: 600;
+    font-size: 18px;
+    margin: 0;
+}
+
+.titlebar-subtitle {
+    margin-left: 12px;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 400;
+}
+
+.button-group {
+    margin-bottom: 16px;
+}
+
+.password-section {
+    margin-top: 16px;
+    margin-bottom: 0;
+}
+
+.action-buttons {
+    margin-top: 20px;
+    margin-bottom: 0;
+}
+
+.selected-folder {
+    margin-top: 16px;
+    margin-bottom: 0;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--muted);
+}
+
+.progress-label {
+    width: 120px;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.progress-text {
+    width: 90px;
+    text-align: right;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 500;
 }
 
 .left,
 .right {
-    padding: 10px;
-    overflow: auto;
+    padding: 0;
+    overflow: hidden;
 }
 
 .panel {
     background: transparent;
     border: 1px solid var(--border);
-    padding: 12px;
-    border-radius: 6px;
+    padding: 20px;
+    border-radius: 8px;
+    box-sizing: border-box;
 }
 
 label {
     display: block;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
+    margin-top: 0;
     font-size: 13px;
     color: var(--muted);
+    font-weight: 500;
 }
 
 input[type="password"],
 input[type="text"] {
     width: 100%;
-    padding: 10px 12px;
+    padding: 12px 14px;
+    margin: 0;
     box-sizing: border-box;
     border: 1px solid var(--border);
     border-radius: 6px;
     background: #fff;
     color: var(--text);
+    font-size: 14px;
 }
 
 .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 10px 14px;
-    margin: 6px 6px 6px 0;
+    padding: 12px 18px;
+    margin: 0 8px 8px 0;
     background: #f3f4f6;
     border: 1px solid rgba(15, 23, 42, 0.06);
     border-radius: 8px;
     cursor: pointer;
     font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.btn:last-child {
+    margin-right: 0;
 }
 
 .btn.primary {
@@ -120,37 +183,95 @@ input[type="text"] {
 
 .folder-area {
     border: 2px dashed var(--border);
-    padding: 18px;
+    padding: 24px 18px;
+    margin: 0 0 16px 0;
     text-align: center;
     color: var(--muted);
     border-radius: 8px;
     background: linear-gradient(180deg, #fff, #fbfdff);
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .options {
-    margin-top: 8px;
+    margin: 16px 0;
+    padding: 0;
+}
+
+.options label {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.options label:last-child {
+    margin-bottom: 0;
+}
+
+.options input[type="checkbox"] {
+    margin-right: 8px;
+    cursor: pointer;
 }
 
 .file-list {
     list-style: none;
     margin: 0;
     padding: 0;
-    overflow: auto;
-    /* right panel will control height via flex */
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 100%;
+    /* Custom scrollbar styling - more visible */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(15, 23, 42, 0.4) rgba(249, 250, 251, 0.5);
+}
+
+.file-list::-webkit-scrollbar {
+    width: 10px;
+}
+
+.file-list::-webkit-scrollbar-track {
+    background: rgba(249, 250, 251, 0.5);
+    border-radius: 5px;
+    margin: 4px 0;
+}
+
+.file-list::-webkit-scrollbar-thumb {
+    background: rgba(15, 23, 42, 0.4);
+    border-radius: 5px;
+    border: 2px solid rgba(249, 250, 251, 0.5);
+}
+
+.file-list::-webkit-scrollbar-thumb:hover {
+    background: rgba(15, 23, 42, 0.6);
 }
 
 .file-item {
-    padding: 10px 8px;
+    padding: 14px 10px;
+    margin: 0;
     border-bottom: 1px solid var(--border);
-    display: flex;
+    display: grid;
+    grid-template-columns: 180px 1fr 200px;
     align-items: center;
-    justify-content: space-between;
+    gap: 16px;
     font-size: 13px;
+    transition: background-color 0.2s ease;
+}
+
+.file-item:last-child {
+    border-bottom: none;
 }
 
 .file-item .meta {
     color: var(--muted);
     font-size: 12px;
+    text-align: right;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-weight: 400;
 }
 
 .progress-row {
@@ -162,16 +283,20 @@ input[type="text"] {
 .progress {
     flex: 1;
     height: 12px;
-    background: #eef2ff;
-    border-radius: 8px;
+    background: #e5e7eb;
+    border-radius: 6px;
     overflow: hidden;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .progress>i {
     display: block;
     height: 100%;
-    background: linear-gradient(90deg, rgba(37, 99, 235, 0.9), rgba(6, 182, 212, 0.9));
+    background: linear-gradient(90deg, #3b82f6, #06b6d4);
     width: 0%;
+    border-radius: 6px;
+    transition: width 0.2s ease;
+    box-shadow: 0 1px 3px rgba(59, 130, 246, 0.3);
 }
 
 .log {
@@ -179,84 +304,179 @@ input[type="text"] {
     grid-column: 1 / -1;
     background: #0b1324;
     color: #e6eef8;
-    padding: 12px;
+    padding: 16px 20px;
+    margin: 8px 0 0 0;
     font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', monospace;
     height: clamp(140px, 18vh, 280px);
     overflow: auto;
     border-radius: 8px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    box-sizing: border-box;
+    /* Custom scrollbar styling */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(230, 238, 248, 0.3) transparent;
+}
+
+.log::-webkit-scrollbar {
+    width: 8px;
+}
+
+.log::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.log::-webkit-scrollbar-thumb {
+    background: rgba(230, 238, 248, 0.3);
+    border-radius: 4px;
+}
+
+.log::-webkit-scrollbar-thumb:hover {
+    background: rgba(230, 238, 248, 0.5);
 }
 
 /* per-file progress inside file list items */
 .file-item .file-progress {
-    width: 320px;
-    margin-right: 12px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
 }
 
 .file-item .file-progress .bar {
-    height: 8px;
-    background: #eee;
-    border-radius: 4px;
+    flex: 1;
+    height: 10px;
+    background: #e5e7eb;
+    border-radius: 6px;
     overflow: hidden;
+    min-width: 0;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .file-item .file-progress .bar>i {
     display: block;
     width: 0%;
     height: 100%;
-    background: linear-gradient(90deg, #9be7a9, #2b5fc6);
+    background: linear-gradient(90deg, #3b82f6, #06b6d4);
+    border-radius: 6px;
+    transition: width 0.2s ease;
+    box-shadow: 0 1px 3px rgba(59, 130, 246, 0.3);
 }
 
 .file-item .file-meta-small {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--muted);
-    margin-left: 8px;
-    min-width: 140px;
+    min-width: 100px;
     text-align: right;
+    flex-shrink: 0;
+    font-weight: 500;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', monospace;
 }
 
 /* polish: name ellipsis, transitions and done/skip state */
 .file-item .name {
-    flex: 1 1 220px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    margin-right: 12px;
+    min-width: 0;
+    font-weight: 500;
+    color: var(--text);
 }
 
-.file-item .file-progress .bar>i {
-    transition: width 160ms linear;
-}
 
 .file-item.done {
-    background: linear-gradient(90deg, rgba(235, 255, 235, 0.6), rgba(245, 245, 245, 0.6));
+    background: linear-gradient(90deg, rgba(220, 252, 231, 0.4), rgba(249, 250, 251, 0.4));
+    border-left: 3px solid #10b981;
 }
 
 .file-item.skipped {
-    background: rgba(240, 240, 240, 0.6);
+    background: rgba(249, 250, 251, 0.6);
+    border-left: 3px solid #9ca3af;
 }
 
 .file-item.error {
-    background: linear-gradient(90deg, rgba(255, 235, 235, 0.6), rgba(245, 245, 245, 0.6));
+    background: linear-gradient(90deg, rgba(254, 226, 226, 0.4), rgba(249, 250, 251, 0.4));
+    border-left: 3px solid #ef4444;
 }
 
 .file-item:hover {
-    background: rgba(240, 240, 240, 0.4);
+    background: rgba(249, 250, 251, 0.8);
 }
 
 /* make right panel flexible so file list grows on large screens */
 .right {
     display: flex;
     flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+    background: linear-gradient(180deg, #fafbfc, #ffffff);
+    border-radius: 8px;
 }
 
-.right .progress-row {
-    order: 0
+.right>.progress-row {
+    order: 0;
+    flex-shrink: 0;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 12px;
+}
+
+.right>h3 {
+    order: -1;
 }
 
 .right #fileList {
+    order: 2;
+    flex: 1 1 0;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 8px 0;
+    margin: 0;
+    /* Ensure scrollbar is always visible when content overflows */
+    scrollbar-gutter: stable;
+    /* Force scrollbar to appear when needed */
+    -webkit-overflow-scrolling: touch;
+}
+
+.right h3 {
+    color: var(--text);
+    font-weight: 600;
+    font-size: 18px;
+    margin: 0 0 16px 0;
+    padding: 0;
+}
+
+
+.right>.file-list-header {
+    display: grid;
+    grid-template-columns: 180px 1fr 200px;
+    gap: 16px;
+    padding: 12px 10px;
+    margin: 0;
+    background: rgba(249, 250, 251, 0.8);
+    border-bottom: 2px solid var(--border);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
     order: 1;
-    flex: 1 1 auto;
-    min-height: 280px
+    flex-shrink: 0;
+}
+
+.file-header-name {
+    min-width: 0;
+}
+
+.file-header-progress {
+    min-width: 0;
+}
+
+.file-header-status {
+    text-align: right;
+    min-width: 0;
 }
 
 @media (max-width: 900px) {
@@ -264,23 +484,35 @@ input[type="text"] {
         --container-max-width: 920px
     }
 
-    .window {
-        grid-template-columns: 1fr;
-        grid-template-rows: 64px auto auto auto;
+    body {
         padding: 12px;
     }
 
-    .file-item .file-progress {
-        width: 220px
+    .window {
+        grid-template-columns: 1fr;
+        grid-template-rows: 64px auto auto auto;
+        padding: 16px;
+    }
+
+    .file-item {
+        grid-template-columns: 140px 1fr 150px;
+        gap: 10px;
+        padding: 12px 8px;
+    }
+
+    .file-list-header {
+        grid-template-columns: 140px 1fr 150px;
+        gap: 10px;
+        padding: 10px 8px;
     }
 
     .titlebar {
-        padding: 8px
+        padding: 12px 16px;
+        margin-bottom: 12px;
     }
 
-    .left,
-    .right {
-        padding: 8px
+    .panel {
+        padding: 16px;
     }
 }
 

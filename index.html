@@ -13,17 +13,17 @@
     <div class="window">
         <div class="titlebar">
             <div class="title">FolderVault</div>
-            <span style="margin-left:12px;color:var(--muted)">AES-256-GCM · scrypt</span>
+            <span class="titlebar-subtitle">AES-256-GCM · scrypt</span>
         </div>
 
         <div class="left panel">
-            <div style="margin-bottom:8px">
+            <div class="button-group">
                 <button id="pick" class="btn">Pick Folder…</button>
                 <button id="openDist" class="btn ghost">Open App Folder</button>
             </div>
 
             <div class="folder-area" id="folderArea">Drop a folder here or click "Pick Folder"</div>
-            <div style="margin-top:8px">
+            <div class="password-section">
                 <label>Password</label>
                 <input id="password" type="password" placeholder="Enter encryption password" />
             </div>
@@ -33,25 +33,29 @@
                 <label><input type="checkbox" id="secureDelete" checked /> Secure-delete originals (best-effort)</label>
             </div>
 
-            <div style="margin-top:10px">
+            <div class="action-buttons">
                 <button id="encrypt" class="btn primary">Encrypt Folder</button>
                 <button id="decrypt" class="btn">Decrypt Folder</button>
                 <button id="cancel" class="btn">Cancel</button>
             </div>
 
-            <div style="margin-top:12px; font-size:12px; color:var(--muted)">Selected: <span id="folder">(none)</span>
+            <div class="selected-folder">Selected: <span id="folder">(none)</span>
             </div>
         </div>
 
         <div class="right panel">
-            <h3 style="margin-top:0; margin-bottom:8px">Files & Progress</h3>
-            <div class="progress-row" style="margin-bottom:8px">
-                <div style="width:120px; color:var(--muted); font-size:13px">Overall</div>
+            <h3>Files & Progress</h3>
+            <div class="progress-row">
+                <div class="progress-label">Overall</div>
                 <div class="progress"><i id="overallBar"></i></div>
-                <div id="overallText" style="width:90px; text-align:right; color:var(--muted); font-size:13px">0 / 0
-                </div>
+                <div id="overallText" class="progress-text">0 / 0</div>
             </div>
 
+            <div class="file-list-header">
+                <div class="file-header-name">File Name</div>
+                <div class="file-header-progress">Progress</div>
+                <div class="file-header-status">Status</div>
+            </div>
             <ul id="fileList" class="file-list"></ul>
         </div>
 
