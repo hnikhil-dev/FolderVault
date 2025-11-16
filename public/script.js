@@ -100,33 +100,25 @@ downloadBtn.addEventListener('click', async function () {
     try {
         // Get download URL from GitHub Releases
         const releaseInfo = await getDownloadUrl();
+        console.log('Release info:', releaseInfo);
 
-        // Fetch the file as a blob
-        const response = await fetch(releaseInfo.url);
-
-        if (!response.ok) {
-            throw new Error('Failed to download file');
-        }
-
-        const blob = await response.blob();
-
-        // Create a blob URL
-        const blobUrl = window.URL.createObjectURL(blob);
+        // For large files (99MB), use direct download instead of blob
+        // This is more reliable and doesn't require loading entire file into memory
+        const downloadUrl = releaseInfo.url;
 
         // Create a temporary anchor element to trigger download
+        // GitHub's browser_download_url should trigger download automatically
         const link = document.createElement('a');
-        link.href = blobUrl;
-        link.download = releaseInfo.name;
+        link.href = downloadUrl;
         link.style.display = 'none';
 
         // Append to body, click, and remove
         document.body.appendChild(link);
         link.click();
-        document.body.removeChild(link);
 
-        // Clean up the blob URL after a short delay
+        // Remove link after a short delay
         setTimeout(() => {
-            window.URL.revokeObjectURL(blobUrl);
+            document.body.removeChild(link);
         }, 100);
 
         // Show success message briefly
