@@ -1,0 +1,17 @@
+{
+    "name": "FolderVault",
+    "short_name": "FolderVault",
+    "description": "Secure folder encryption with military-grade cryptography",
+    "icons": [
+        {
+            "src": "/logo-icon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
+        }
+    ],
+    "theme_color": "#6366f1",
+    "background_color": "#0a0a0a",
+    "display": "standalone",
+    "start_url": "/"
+}
