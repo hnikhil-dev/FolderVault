@@ -41,6 +41,10 @@
 
     function appendLog(msg) {
         const time = new Date().toLocaleTimeString();
+        // Ensure each log entry starts on a new line
+        if (logEl.textContent && !logEl.textContent.endsWith('\n')) {
+            logEl.textContent += '\n';
+        }
         logEl.textContent += `[${time}] ${msg}\n`;
         logEl.scrollTop = logEl.scrollHeight;
     }
@@ -122,7 +126,7 @@
             li.dataset.file = file;
             li.innerHTML = `<div class="name">${baseName(file)}</div>` +
                 `<div class="file-progress"><div class="bar"><i></i></div><div class="file-meta-small">0%</div></div>` +
-                `<div class="meta" style="min-width:220px; text-align:right"></div>`;
+                `<div class="meta"></div>`;
             fileList.appendChild(li);
             fileMap.set(file, li);
         }
@@ -254,6 +258,13 @@
             if (!ok) return;
         }
 
+        // Clear previous operation's file list and progress
+        fileList.innerHTML = '';
+        fileMap.clear();
+        fileStats.clear();
+        overallBar.style.width = '0%';
+        overallText.textContent = '0 / 0';
+
         setRunning(true);
         appendLog('Starting encryption...');
         const options = { keepOriginals: keepOriginals.checked, secureDelete: secureDelete.checked };
@@ -272,6 +283,14 @@
         if (!selectedFolder) { appendLog('Pick a folder first'); return; }
         const password = pwdInput.value;
         if (!password) { appendLog('Enter a password'); return; }
+
+        // Clear previous operation's file list and progress
+        fileList.innerHTML = '';
+        fileMap.clear();
+        fileStats.clear();
+        overallBar.style.width = '0%';
+        overallText.textContent = '0 / 0';
+
         setRunning(true);
         appendLog('Starting decryption...');
         const options = { keepOriginals: keepOriginals.checked, secureDelete: secureDelete.checked };
