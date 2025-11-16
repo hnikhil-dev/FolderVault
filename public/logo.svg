@@ -1,0 +1,25 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Folder base -->
+  <path d="M40 60 L40 160 L160 160 L160 80 L120 80 L100 60 L40 60 Z" fill="#6366f1" fill-opacity="0.2" stroke="#6366f1" stroke-width="3"/>
+  
+  <!-- Folder tab -->
+  <path d="M40 60 L100 60 L120 80 L40 80 Z" fill="#6366f1" stroke="#6366f1" stroke-width="3"/>
+  
+  <!-- Lock body -->
+  <rect x="85" y="100" width="30" height="35" rx="2" fill="#6366f1" stroke="#ffffff" stroke-width="2"/>
+  
+  <!-- Lock shackle -->
+  <path d="M95 100 Q100 90 100 85 Q100 80 105 80 L115 80 Q120 80 120 85 Q120 90 115 100" 
+        stroke="#ffffff" stroke-width="3" fill="none" stroke-linecap="round"/>
+  
+  <!-- Keyhole -->
+  <circle cx="100" cy="115" r="4" fill="#ffffff"/>
+  <rect x="98" y="115" width="4" height="8" fill="#ffffff"/>
+  
+  <!-- Security lines (encryption pattern) -->
+  <path d="M50 120 L70 120" stroke="#6366f1" stroke-width="2" stroke-opacity="0.5" stroke-linecap="round"/>
+  <path d="M130 120 L150 120" stroke="#6366f1" stroke-width="2" stroke-opacity="0.5" stroke-linecap="round"/>
+  <path d="M50 135 L70 135" stroke="#6366f1" stroke-width="2" stroke-opacity="0.5" stroke-linecap="round"/>
+  <path d="M130 135 L150 135" stroke="#6366f1" stroke-width="2" stroke-opacity="0.5" stroke-linecap="round"/>
+</svg>
+
