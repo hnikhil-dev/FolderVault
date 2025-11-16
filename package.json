@@ -1,0 +1,63 @@
+{
+    "name": "folder-vault",
+    "version": "0.1.0",
+    "description": "Electron desktop app to encrypt/decrypt folders with AES-256-GCM and scrypt-derived keys",
+    "main": "main.js",
+    "private": true,
+    "scripts": {
+        "start": "electron .",
+        "dev": "electron .",
+        "dist": "electron-builder",
+        "package-win": "electron-packager . FolderVault --platform=win32 --arch=x64 --out=dist --overwrite --asar=false",
+        "build": "npm run package-win",
+        "watch-package": "chokidar \"**/*.{js,html,json}\" -c \"npm run package-win\"",
+        "test-harness": "node test_harness.js"
+    },
+    "author": "Your Name <you@example.com>",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/yourname/folder-vault.git"
+    },
+    "keywords": [
+        "electron",
+        "encryption",
+        "vault",
+        "aes",
+        "scrypt"
+    ],
+    "license": "MIT",
+    "devDependencies": {
+        "electron": "^25.0.0",
+        "electron-builder": "^24.6.0",
+        "electron-packager": "^17.1.0",
+        "electron-reload": "^1.5.0",
+        "chokidar-cli": "^3.0.0"
+    },
+    "build": {
+        "appId": "com.foldervault.app",
+        "productName": "FolderVault",
+        "files": [
+            "main.js",
+            "preload.js",
+            "index.html",
+            "package.json",
+            "node_modules/**/*",
+            "resources/**/*",
+            "dist/**/*",
+            "!**/*.map",
+            "!**/test/**",
+            "!**/tests/**",
+            "!**/*.md"
+        ],
+        "directories": {
+            "buildResources": "build"
+        },
+        "win": {
+            "target": [
+                "portable"
+            ],
+            "publisherName": "FolderVault",
+            "sign": false
+        }
+    }
+}

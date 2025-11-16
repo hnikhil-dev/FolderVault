@@ -1,0 +1,291 @@
+/* renderer.css - extracted styles from index.html for CSP hardening */
+:root {
+    --bg: #f2f4f8;
+    --panel: #ffffff;
+    --accent: #2563eb;
+    --accent-2: #06b6d4;
+    --text: #0f172a;
+    --muted: #6b7280;
+    --border: rgba(15, 23, 42, 0.06);
+    --btn-bg: #f3f4f6;
+    --gap: 16px;
+    --container-max-width: 1200px;
+    --radius: 8px;
+    --base-font: 14px;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(#f7fafc, #eef2ff);
+    color: var(--text);
+    font-size: var(--base-font);
+}
+
+/* prevent horizontal overflow on very long filenames/contents */
+body {
+    overflow-x: hidden;
+}
+
+.window {
+    width: 100%;
+    max-width: var(--container-max-width);
+    margin: 24px auto;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    box-shadow: 0 8px 30px rgba(2, 6, 23, 0.06);
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    grid-template-rows: 64px 1fr auto;
+    gap: var(--gap);
+    padding: 18px;
+    border-radius: var(--radius);
+    transition: max-width 260ms ease, box-shadow 200ms ease;
+}
+
+.titlebar {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    background: transparent;
+    border-bottom: 1px solid var(--border);
+}
+
+.titlebar .title {
+    font-weight: 600;
+}
+
+.left,
+.right {
+    padding: 10px;
+    overflow: auto;
+}
+
+.panel {
+    background: transparent;
+    border: 1px solid var(--border);
+    padding: 12px;
+    border-radius: 6px;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 13px;
+    color: var(--muted);
+}
+
+input[type="password"],
+input[type="text"] {
+    width: 100%;
+    padding: 10px 12px;
+    box-sizing: border-box;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: #fff;
+    color: var(--text);
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 14px;
+    margin: 6px 6px 6px 0;
+    background: #f3f4f6;
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn.primary {
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    color: white;
+    border-color: transparent;
+}
+
+.btn.ghost {
+    background: transparent;
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: default;
+}
+
+.folder-area {
+    border: 2px dashed var(--border);
+    padding: 18px;
+    text-align: center;
+    color: var(--muted);
+    border-radius: 8px;
+    background: linear-gradient(180deg, #fff, #fbfdff);
+}
+
+.options {
+    margin-top: 8px;
+}
+
+.file-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+    /* right panel will control height via flex */
+}
+
+.file-item {
+    padding: 10px 8px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+}
+
+.file-item .meta {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.progress-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.progress {
+    flex: 1;
+    height: 12px;
+    background: #eef2ff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.progress>i {
+    display: block;
+    height: 100%;
+    background: linear-gradient(90deg, rgba(37, 99, 235, 0.9), rgba(6, 182, 212, 0.9));
+    width: 0%;
+}
+
+.log {
+    border: 1px solid var(--border);
+    grid-column: 1 / -1;
+    background: #0b1324;
+    color: #e6eef8;
+    padding: 12px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', monospace;
+    height: clamp(140px, 18vh, 280px);
+    overflow: auto;
+    border-radius: 8px;
+}
+
+/* per-file progress inside file list items */
+.file-item .file-progress {
+    width: 320px;
+    margin-right: 12px;
+}
+
+.file-item .file-progress .bar {
+    height: 8px;
+    background: #eee;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.file-item .file-progress .bar>i {
+    display: block;
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #9be7a9, #2b5fc6);
+}
+
+.file-item .file-meta-small {
+    font-size: 12px;
+    color: var(--muted);
+    margin-left: 8px;
+    min-width: 140px;
+    text-align: right;
+}
+
+/* polish: name ellipsis, transitions and done/skip state */
+.file-item .name {
+    flex: 1 1 220px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin-right: 12px;
+}
+
+.file-item .file-progress .bar>i {
+    transition: width 160ms linear;
+}
+
+.file-item.done {
+    background: linear-gradient(90deg, rgba(235, 255, 235, 0.6), rgba(245, 245, 245, 0.6));
+}
+
+.file-item.skipped {
+    background: rgba(240, 240, 240, 0.6);
+}
+
+.file-item.error {
+    background: linear-gradient(90deg, rgba(255, 235, 235, 0.6), rgba(245, 245, 245, 0.6));
+}
+
+.file-item:hover {
+    background: rgba(240, 240, 240, 0.4);
+}
+
+/* make right panel flexible so file list grows on large screens */
+.right {
+    display: flex;
+    flex-direction: column;
+}
+
+.right .progress-row {
+    order: 0
+}
+
+.right #fileList {
+    order: 1;
+    flex: 1 1 auto;
+    min-height: 280px
+}
+
+@media (max-width: 900px) {
+    :root {
+        --container-max-width: 920px
+    }
+
+    .window {
+        grid-template-columns: 1fr;
+        grid-template-rows: 64px auto auto auto;
+        padding: 12px;
+    }
+
+    .file-item .file-progress {
+        width: 220px
+    }
+
+    .titlebar {
+        padding: 8px
+    }
+
+    .left,
+    .right {
+        padding: 8px
+    }
+}
+
+@media (min-width: 1600px) {
+    :root {
+        --container-max-width: 1400px
+    }
+}

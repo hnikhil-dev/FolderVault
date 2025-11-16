@@ -1,0 +1,7 @@
+# This is an npm (Node.js / Electron) project. Dependencies are declared in package.json.
+# The file exists so the repo can be easily scanned by tools that look for requirements.txt.
+#
+# To install dependencies, run:
+#   npm ci
+#
+# Node.js engine recommended: 18+ (see package.json devDependencies for versions)
