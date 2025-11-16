@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-windows:
+    name: Test & Package (Windows)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm ci
+      - name: Run test harness
+        run: npm run test-harness
+      - name: Package portable (unsigned)
+        run: npm run package-win
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-dist
+          path: dist/
+
+  # Signing job removed to keep CI simple for local/dev focus.
+  # If you need signing later, add a sign job that decodes a PFX from secrets and runs signtool.
