@@ -17,7 +17,7 @@
 
 </div>
 
-<div align="center">
+---
   
 ## 🎯 Why I Built This
 
@@ -35,7 +35,7 @@ This project helped me understand:
 - Secure key derivation (scrypt)
 - Practical challenges in file encryption systems
 
-</div>
+---
 
 ## ✨ Features
 
