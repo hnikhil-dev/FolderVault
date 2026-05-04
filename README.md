@@ -17,6 +17,26 @@
 
 </div>
 
+<div align="center">
+  
+## 🎯 Why I Built This
+
+Most encryption tools are either:
+- Too complex for everyday users
+- Or rely on cloud-based processing
+
+I built FolderVault to explore:
+- How encryption actually works in real-world applications
+- How to handle large files securely using streaming
+- How to design systems with privacy-first architecture
+
+This project helped me understand:
+- Applied cryptography (AES-256-GCM)
+- Secure key derivation (scrypt)
+- Practical challenges in file encryption systems
+
+</div>
+
 ## ✨ Features
 
 <div align="center">
@@ -329,6 +349,14 @@ Example format:
 - **Large files** (> 100 MB): Streaming, memory-efficient
 
 </details>
+
+---
+
+## 🧠 Key Learnings
+
+- Encryption is easy to use but hard to implement correctly
+- Secure file handling is more complex than algorithms themselves
+- Performance + security trade-offs matter in real systems
 
 ---
 
